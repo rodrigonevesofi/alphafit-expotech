@@ -12,21 +12,7 @@ const icons = [
 export default function FeatureCard({ item, index = 0 }) {
   return (
     <article className="glass card">
-      <div
-        style={{
-          width: 42,
-          height: 42,
-          borderRadius: 12,
-          background: "linear-gradient(135deg, rgba(255,107,0,0.2), rgba(255,107,0,0.06))",
-          border: "1px solid rgba(255,107,0,0.25)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "1.2rem",
-          marginBottom: 14,
-          padding: index === 0 ? "0" : "8px" // Se for o mascote, tira o padding pra imagem preencher
-        }}
-      >
+      <div className={`feature-icon-box ${index === 0 ? "p-0" : "p-2"}`}>
         {icons[index % icons.length]}
       </div>
       <h3>{item.title}</h3>

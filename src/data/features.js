@@ -1,10 +1,10 @@
 export const features = [
   {
     title: "Treinos inteligentes",
-    text: "Treinos montados com base no perfil do aluno.",
+    text: "Treinos montados com base no seu perfil.",
   },
   {
-    title: "Recomendação com IA",
+    title: "Recomendações com IA",
     text: "Sugestões personalizadas conforme comportamento e objetivo.",
   },
   {

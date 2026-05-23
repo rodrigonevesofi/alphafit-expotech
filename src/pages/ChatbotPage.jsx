@@ -1,20 +1,19 @@
 import Header from "../components/layout/Header";
 import ChatbotBox from "../components/chatbot/ChatbotBox";
+import { useEffect } from "react";
 
 export default function ChatbotPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="app-bg">
+    <div className="app-bg h-screen flex flex-col overflow-hidden">
       <Header />
 
-      <section className="container section">
-        <span className="tag">Chatbot</span>
-        <h1>Assistente virtual da AlphaFit</h1>
-        <p className="section-subtitle">
-          Sugestões de treino, dúvidas e atendimento com IA.
-        </p>
-
+      <div className="container flex-grow py-4 md:py-6 h-full flex flex-col">
         <ChatbotBox />
-      </section>
+      </div>
     </div>
   );
 }

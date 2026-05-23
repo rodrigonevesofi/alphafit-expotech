@@ -14,30 +14,31 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-content">
-        <Link to="/" className="logo" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <img src={cyborgMan} alt="Cyborg" style={{ height: "42px", objectFit: "contain" }} />
+        <Link to="/" className="logo logo-link">
+          <img src={cyborgMan} alt="Cyborg" className="logo-icon-img" />
           <div>ALPHA<span>FIT</span></div>
         </Link>
 
         <nav className="nav">
           <Link to="/">Home</Link>
+          <Link to="/produtos">Loja</Link>
           <Link to="/chatbot">Chatbot</Link>
+          <Link to="/agenda">Agenda</Link>
 
           {user ? (
             <>
               <Link
                 to={user.role === "admin" ? "/admin" : "/aluno"}
-                className="btn-secondary"
-                style={{ padding: "8px 18px", fontSize: "0.85rem" }}
+                className="btn-secondary btn-nav"
               >
                 Meu painel
               </Link>
-              <button className="btn-secondary" onClick={handleLogout} style={{ padding: "8px 18px", fontSize: "0.85rem" }}>
+              <button className="btn-secondary btn-nav" onClick={handleLogout}>
                 Sair
               </button>
             </>
           ) : (
-            <Link to="/auth" className="btn-primary" style={{ padding: "10px 22px" }}>
+            <Link to="/auth" className="btn-primary btn-enter">
               Entrar
             </Link>
           )}

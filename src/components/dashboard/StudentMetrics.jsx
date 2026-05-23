@@ -16,14 +16,16 @@ export default function StudentMetrics({ dashboard, user }) {
 
   const metrics = [
     {
-      label: "Treinos concluídos",
+      label: "Frequência",
       value: String(completedWorkouts),
       progress: Math.min(evolution, 100),
       color: "",
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--orange)" }}>
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-orange-500">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
         </svg>
       ),
     },
@@ -33,7 +35,7 @@ export default function StudentMetrics({ dashboard, user }) {
       progress: weeklyGoal ? Math.min((completedThisWeek / weeklyGoal) * 100, 100) : 0,
       color: "",
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--cyan)" }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-400">
           <circle cx="12" cy="12" r="10" />
           <circle cx="12" cy="12" r="6" />
           <circle cx="12" cy="12" r="2" />
@@ -46,7 +48,7 @@ export default function StudentMetrics({ dashboard, user }) {
       progress: evolution,
       color: "cyan",
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--cyan)" }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-400">
           <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
           <polyline points="16 7 22 7 22 13"></polyline>
         </svg>
@@ -58,7 +60,7 @@ export default function StudentMetrics({ dashboard, user }) {
       progress: userBiotype ? 100 : 0,
       color: userBiotype ? "orange" : "cyan",
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--orange)" }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-orange-500">
           <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
           <circle cx="12" cy="7" r="4"></circle>
         </svg>
@@ -85,9 +87,9 @@ export default function StudentMetrics({ dashboard, user }) {
               }
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="metric-header">
               <p className="small-label">{item.label}</p>
-              <span style={{ fontSize: "1.2rem" }}>{item.icon}</span>
+              <span className="metric-icon">{item.icon}</span>
             </div>
 
             <div className={`metric-value ${isBiotype && userBiotype ? "text-orange-500" : ""}`}>

@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
 import DashboardLayout from "../components/layout/DashboardLayout";
 import StudentMetrics from "../components/dashboard/StudentMetrics";
@@ -18,6 +21,8 @@ import {
   apiCreateWorkoutCheckIn,
 } from "../services/api";
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function StudentDashboard() {
   const { user, updateUser } = useAuth();
 
@@ -31,6 +36,7 @@ export default function StudentDashboard() {
   const [loadingDashboard, setLoadingDashboard] = useState(true);
   const [checkLoading, setCheckLoading] = useState(false);
   const [dashboardError, setDashboardError] = useState("");
+  const dashboardRef = useRef(null);
 
   async function loadDashboard() {
     if (!user?.id) {
@@ -70,6 +76,21 @@ export default function StudentDashboard() {
       window.removeEventListener("alphafit-dashboard-refresh", refreshDashboard);
     };
   }, [user?.id]);
+
+  useGSAP(() => {
+    gsap.utils.toArray(".gsap-dashboard-section").forEach((section) => {
+      gsap.from(section, {
+        scrollTrigger: {
+          trigger: section,
+          start: "top 85%",
+        },
+        y: 30,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power2.out",
+      });
+    });
+  }, { scope: dashboardRef, dependencies: [loadingDashboard, dashboardError] });
 
   async function handleCheckIn(workoutName) {
     if (!user?.id || !workoutName) return;
@@ -120,7 +141,7 @@ export default function StudentDashboard() {
       <DashboardLayout title="Painel do aluno">
         <div className="glass card">
           <h3>Não foi possível carregar o painel</h3>
-          <p className="text-soft" style={{ marginBottom: 16 }}>
+          <p className="text-soft mb-4">
             {dashboardError}
           </p>
           <button className="btn-primary" onClick={loadDashboard}>
@@ -133,23 +154,17 @@ export default function StudentDashboard() {
 
   return (
     <DashboardLayout title="Painel do aluno">
-      <div className="dashboard-hero">
+     <div ref={dashboardRef}>
+      <div className="dashboard-hero gsap-dashboard-section">
         <div>
           <span className="tag">Seu progresso</span>
           <h1>Olá, {user?.name?.split(" ")[0] || "Aluno"} 👊</h1>
-          <p className="text-soft" style={{ marginTop: 6 }}>
+          <p className="text-soft mt-1.5">
             Acompanhe seus treinos, agenda, dieta e comunidade.
           </p>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "16px",
-            alignItems: "center",
-            flexWrap: "wrap",
-          }}
-        >
+        <div className="flex gap-4 items-center flex-wrap">
           <div
             className="dashboard-user-box cursor-pointer hover:border-orange-500/50 transition-colors"
             onClick={() => setShowProfileModal(true)}
@@ -161,29 +176,48 @@ export default function StudentDashboard() {
         </div>
       </div>
 
-      <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-orange-600/20 to-orange-500/5 border border-orange-500/30 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1 h-full bg-orange-500"></div>
+      {user?.plan ? (
+        <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-orange-600/20 to-orange-500/5 border border-orange-500/30 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden gsap-dashboard-section">
+          <div className="absolute top-0 left-0 w-1 h-full bg-orange-500"></div>
 
-        <div>
-          <h2 className="text-xl font-bold text-white mb-1">
-            Você ainda não possui um plano ativo! ⚠️
-          </h2>
-          <p className="text-white/80 text-sm">
-            Contrate agora o seu plano e mude seu Shape! Desbloqueie todos os recursos.
-          </p>
+          <div>
+            <h2 className="text-xl font-bold text-white mb-1">
+              Plano Ativo: <span className="text-orange-500">{user.plan}</span> 💎
+            </h2>
+            <p className="text-white/80 text-sm">
+              Você tem acesso total a todos os recursos. Continue focado nos seus treinos!
+            </p>
+          </div>
+          
+          <div className="text-orange-500 font-bold bg-orange-500/10 px-4 py-2 rounded-lg border border-orange-500/20">
+            Status: Regular
+          </div>
         </div>
+      ) : (
+        <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-orange-600/20 to-orange-500/5 border border-orange-500/30 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden gsap-dashboard-section">
+          <div className="absolute top-0 left-0 w-1 h-full bg-orange-500"></div>
 
-        <button
-          onClick={() => setShowPlansModal(true)}
-          className="btn-primary whitespace-nowrap shadow-[0_0_20px_rgba(255,107,0,0.3)]"
-        >
-          Ver Planos
-        </button>
-      </div>
+          <div>
+            <h2 className="text-xl font-bold text-white mb-1">
+              Você ainda não possui um plano ativo! ⚠️
+            </h2>
+            <p className="text-white/80 text-sm">
+              Contrate agora o seu plano e mude seu Shape! Desbloqueie todos os recursos.
+            </p>
+          </div>
+
+          <button
+            onClick={() => setShowPlansModal(true)}
+            className="btn-primary whitespace-nowrap shadow-[0_0_20px_rgba(255,107,0,0.3)]"
+          >
+            Ver Planos
+          </button>
+        </div>
+      )}
 
       <StudentMetrics dashboard={dashboard} user={user} />
 
-      <div className="grid-2 section-gap">
+      <div className="grid-2 section-gap gsap-dashboard-section">
         <StudentDiet dashboard={dashboard} />
         <StudentWorkout
           dashboard={dashboard}
@@ -192,10 +226,10 @@ export default function StudentDashboard() {
         />
       </div>
 
-      <div className="grid-2 section-gap">
+      <div className="grid-2 section-gap gsap-dashboard-section">
         <div className="glass card">
           <h3>Resumo da semana</h3>
-          <p className="text-soft" style={{ marginBottom: 16 }}>
+          <p className="text-soft mb-4">
             Dados calculados com base nos check-ins registrados.
           </p>
 
@@ -233,7 +267,7 @@ export default function StudentDashboard() {
         <StudentSchedule dashboard={dashboard} />
       </div>
 
-      <div className="section-gap">
+      <div className="section-gap gsap-dashboard-section">
         <StudentFeed />
       </div>
 
@@ -304,9 +338,9 @@ export default function StudentDashboard() {
                 Voltar
               </button>
 
-              <button className="btn-primary flex-1">
+              <Link to="/contratacao" state={{ plan: selectedPlan }} className="btn-primary flex-1 text-center flex justify-center items-center">
                 Contratar plano
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -405,10 +439,10 @@ export default function StudentDashboard() {
         </div>
       )}
 
+     </div>
       <Link
         to="/chatbot"
-        className="fixed bottom-8 right-8 z-40 w-24 h-24 flex items-center justify-center hover:scale-110 transition-transform drop-shadow-[0_0_15px_rgba(255,107,0,0.6)]"
-        style={{ padding: 0, animation: "floatRobot 4s ease-in-out infinite" }}
+        className="fixed bottom-8 right-8 z-40 w-24 h-24 flex items-center justify-center hover:scale-110 transition-transform drop-shadow-[0_0_15px_rgba(255,107,0,0.6)] chatbot-fab animate-float-robot-slow"
       >
         <img src={cyborgMan} alt="AlphaBot" className="w-full h-full object-contain" />
       </Link>

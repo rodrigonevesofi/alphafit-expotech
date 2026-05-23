@@ -109,10 +109,17 @@ export default function ChatbotBox() {
   const [isTyping, setIsTyping] = useState(false);
 
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    if (inputRef.current && !testActive) {
+      inputRef.current.focus();
+    }
+  }, [testActive]);
 
   useEffect(() => {
     if (searchParams.get("action") === "biotype") {
@@ -249,116 +256,40 @@ setTestActive(false);
   };
 
   return (
-    <div
-      className="glass card"
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        height: "70vh",
-        maxHeight: "800px",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-          marginBottom: "20px",
-          borderBottom: "1px solid var(--border)",
-          paddingBottom: "12px",
-          flexShrink: 0,
-        }}
-      >
+    <div className="glass card chatbot-container">
+      <div className="chatbot-header">
         <img
           src={mascot}
           alt="AlphaBot Mascote Pixel Art"
-          style={{
-            width: "64px",
-            height: "64px",
-            objectFit: "contain",
-            imageRendering: "auto",
-            animation: "floatRobot 3s ease-in-out infinite",
-          }}
+          className="chatbot-avatar animate-float-robot"
         />
 
         <div>
-          <h3 style={{ marginBottom: "2px" }}>AlphaBot</h3>
-          <span
-            style={{
-              fontSize: "0.8rem",
-              color: "var(--success)",
-              fontWeight: "600",
-            }}
-          >
+          <h3 className="mb-0.5">AlphaBot</h3>
+          <span className="chatbot-status">
             ● Online
           </span>
         </div>
       </div>
 
-      <div
-        className="form"
-        style={{
-          flexGrow: 1,
-          overflowY: "auto",
-          paddingRight: "8px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-        }}
-      >
+      <div className="form chatbot-messages">
         {messages.map((msg, index) => (
           <div
             key={index}
-            className="glass card"
-            style={{
-              marginLeft: msg.type === "user" ? "40px" : "0",
-              marginRight: msg.type === "bot" ? "40px" : "0",
-              background:
-                msg.type === "bot"
-                  ? "rgba(255,107,0,0.05)"
-                  : "rgba(255,255,255,0.03)",
-              borderColor:
-                msg.type === "bot" ? "rgba(255,107,0,0.2)" : "var(--border)",
-              padding: "16px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
-            }}
+            className={`glass card chatbot-msg ${msg.type === "bot" ? "chatbot-msg-bot" : "chatbot-msg-user"}`}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: "12px",
-              }}
-            >
+            <div className="chatbot-msg-row">
               {msg.type === "bot" && (
                 <img
                   src={mascot}
                   alt="Bot Avatar"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    flexShrink: 0,
-                    objectFit: "contain",
-                    imageRendering: "auto",
-                    animation: "floatRobot 3s ease-in-out infinite",
-                  }}
+                  className="chatbot-avatar-sm animate-float-robot"
                 />
               )}
 
               <div style={{ flexGrow: 1 }}>
                 <strong
-                  style={{
-                    display: "block",
-                    marginBottom: "4px",
-                    color:
-                      msg.type === "bot"
-                        ? "var(--orange-light)"
-                        : "var(--white)",
-                  }}
+                  className={`block mb-1 ${msg.type === "bot" ? "text-orange" : "text-white"}`}
                 >
                   {msg.type === "bot"
                     ? "AlphaBot"
@@ -369,35 +300,14 @@ setTestActive(false);
               </div>
 
               {msg.type === "user" && (
-                <div
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "50%",
-                    background: "var(--blue)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: "bold",
-                    fontSize: "0.8rem",
-                    flexShrink: 0,
-                  }}
-                >
+                <div className="chatbot-user-avatar">
                   {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
                 </div>
               )}
             </div>
 
             {msg.options && (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "8px",
-                  marginTop: "8px",
-                  marginLeft: "52px",
-                }}
-              >
+              <div className="chatbot-options">
                 {msg.options.map((opt, i) => (
                   <button
                     key={i}
@@ -413,25 +323,12 @@ setTestActive(false);
         ))}
 
         {isTyping && (
-          <div
-            className="glass card"
-            style={{
-              marginRight: "40px",
-              background: "rgba(255,107,0,0.05)",
-              borderColor: "rgba(255,107,0,0.2)",
-              padding: "16px",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div className="glass card chatbot-msg chatbot-msg-bot">
+            <div className="chatbot-typing-row">
               <img
                 src={mascot}
                 alt="Bot Avatar"
-                style={{
-                  width: "36px",
-                  height: "36px",
-                  objectFit: "contain",
-                  animation: "floatRobot 3s ease-in-out infinite",
-                }}
+                className="chatbot-avatar-typing animate-float-robot"
               />
 
               <strong style={{ color: "var(--orange-light)" }}>
@@ -446,23 +343,19 @@ setTestActive(false);
 
       <form
         onSubmit={handleSend}
-        className="form"
-        style={{
-          marginTop: "20px",
-          display: "flex",
-          gap: "12px",
-          flexShrink: 0,
-        }}
+        className="form chatbot-form"
       >
         <input
+          ref={inputRef}
           type="text"
+          autoFocus
           placeholder={
             testActive ? "Responda às opções acima..." : "Digite sua pergunta..."
           }
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           disabled={testActive || isTyping}
-          style={{ flexGrow: 1 }}
+          className="flex-grow"
         />
 
         <button

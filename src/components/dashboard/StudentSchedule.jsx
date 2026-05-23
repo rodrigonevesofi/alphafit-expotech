@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function formatEventDate(value) {
   if (!value) return "Data não informada";
 
@@ -16,11 +18,18 @@ export default function StudentSchedule({ dashboard }) {
   const events = dashboard?.schedule || [];
 
   return (
-    <div className="glass card">
-      <h3>Agenda</h3>
-      <p className="text-soft" style={{ marginBottom: 16 }}>
-        Compromissos e atividades da semana.
-      </p>
+    <div className="glass card flex flex-col relative">
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <h3 className="mb-0">Agenda</h3>
+          <p className="text-soft text-sm mt-1 mb-0">
+            Compromissos e atividades da semana.
+          </p>
+        </div>
+        <Link to="/agenda" className="text-orange-500 text-sm font-bold hover:underline whitespace-nowrap ml-2">
+          Ver grade completa &rarr;
+        </Link>
+      </div>
 
       <div style={{ display: "grid", gap: 10 }}>
         {events.length > 0 ? (

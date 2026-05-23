@@ -33,16 +33,16 @@ export default function Auth() {
               <>Crie sua <span className="gradient-text">conta</span></>
             )}
           </h1>
-          <p style={{ marginTop: 16, color: "rgba(255,255,255,0.72)", lineHeight: 1.7 }}>
+          <p className="auth-info-text">
             {mode === "login"
               ? "Acesse sua área personalizada com treinos, métricas e acompanhamento de evolução."
               : "Cadastre-se para ter acesso à plataforma e começar sua jornada fitness."}
           </p>
 
-          <div style={{ marginTop: 32 }}>
-            <div className="user-info-item" style={{ marginBottom: 12 }}>
+          <div className="auth-test-box">
+            <div className="user-info-item auth-test-item">
               <strong>Conta de teste (admin)</strong>
-              <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem" }}>
+              <span className="auth-test-value">
                 admin@alphafit.com / 123456
               </span>
             </div>

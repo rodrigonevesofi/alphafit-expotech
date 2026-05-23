@@ -10,7 +10,7 @@ export default function PlanCard({ plan, onSelect }) {
       }`}
     >
       {isHighlight && plan.destaque && (
-        <div className="absolute left-0 w-full text-white text-center py-2 text-sm font-black uppercase tracking-widest rounded-t-[16px] shadow-[0_4px_20px_rgba(255,107,0,0.35)]" style={{ top: "-38px", background: "linear-gradient(90deg, var(--orange), var(--orange-light))" }}>
+        <div className="absolute left-0 w-full text-white text-center py-2 text-sm font-black uppercase tracking-widest rounded-t-[16px] shadow-[0_4px_20px_rgba(255,107,0,0.35)] plan-highlight-bar">
           {plan.destaque}
         </div>
       )}
@@ -21,15 +21,7 @@ export default function PlanCard({ plan, onSelect }) {
 
       {(plan.subDestaque || plan.destaque) && (
         <span 
-          className="tag" 
-          style={{ 
-            marginBottom: "16px", 
-            textTransform: "none", 
-            letterSpacing: "normal", 
-            fontWeight: 500, 
-            fontFamily: "'Montserrat', sans-serif",
-            alignSelf: "flex-start"
-          }}
+          className="tag plan-sub-tag" 
         >
           {plan.subDestaque || plan.destaque}
         </span>

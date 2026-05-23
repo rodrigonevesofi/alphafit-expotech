@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 /* ─── Design Tokens ─────────────────────────────────────────── */
 :root {
   --bg-main:       #0a0a0a;
@@ -31,7 +32,7 @@
   --radius-sm:     10px;
 }
 
-/* ─── Reset ─────────────────────────────────────────────────── */
+/* ─── Resetar ─────────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
@@ -67,17 +68,17 @@ input:focus, select:focus {
 }
 input::placeholder { color: var(--text-muted); }
 
-/* ─── App Shell (sidebar layout) ────────────────────────────── */
+/* ─── App Shell (layout da barra lateral) ────────────────────────────── */
 .app-shell {
   display: flex;
   min-height: 100vh;
 }
 
-/* ─── Sidebar ────────────────────────────────────────────────── */
+/* ─── Barra lateral ────────────────────────────────────────────────── */
 .sidebar {
   width: var(--sidebar-w);
   min-height: 100vh;
-  background: rgba(10, 10, 14, 0.92);
+  background: rgba(10, 10, 10, 0.4);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -213,7 +214,7 @@ input::placeholder { color: var(--text-muted); }
 }
 .sidebar-logout:hover { color: var(--danger); transform: none; }
 
-/* ─── Main content area ──────────────────────────────────────── */
+/* ─── Area principal do conteúdo ──────────────────────────────────────── */
 .main-content {
   margin-left: var(--sidebar-w);
   flex: 1;
@@ -222,14 +223,16 @@ input::placeholder { color: var(--text-muted); }
   flex-direction: column;
 }
 
-/* ─── Top bar (inside main) ──────────────────────────────────── */
+/* ─── barra do topo (dentro do main) ──────────────────────────────────── */
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 18px 32px;
   border-bottom: 1px solid var(--border);
-  background: var(--bg-main);
+  background: rgba(10, 10, 10, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 20;
@@ -260,20 +263,20 @@ input::placeholder { color: var(--text-muted); }
   font-weight: 600;
 }
 
-/* ─── Page wrapper ───────────────────────────────────────────── */
+/* ─── Pagina wrapper ───────────────────────────────────────────── */
 .page {
   flex: 1;
   padding: 32px;
   animation: fadePage 0.35s ease;
 }
 
-/* ─── Public layout (no sidebar) ────────────────────────────── */
+/* ─── layout publico na barra────────────────────────────── */
 .app-bg {
   min-height: 100vh;
   animation: fadePage 0.4s ease;
 }
 
-/* ─── Header (public pages) ─────────────────────────────────── */
+/* ─── Topo (paginas publicas) ─────────────────────────────────── */
 .header {
   position: sticky;
   top: 0;
@@ -323,7 +326,7 @@ input::placeholder { color: var(--text-muted); }
   margin: 0 auto;
 }
 
-/* ─── Glass card ─────────────────────────────────────────────── */
+/* ─── Card efeito vidro ─────────────────────────────────────────────── */
 .glass {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -331,7 +334,7 @@ input::placeholder { color: var(--text-muted); }
   box-shadow: var(--shadow-card);
 }
 
-/* ─── Neon card variant ──────────────────────────────────────── */
+/* ─── variante do card neon ──────────────────────────────────────── */
 .card-neon {
   background: var(--bg-card);
   border: 1px solid var(--border-neon);
@@ -339,7 +342,7 @@ input::placeholder { color: var(--text-muted); }
   box-shadow: var(--shadow-card), 0 0 0 1px rgba(255, 107, 0, 0.08);
 }
 
-/* ─── Buttons ────────────────────────────────────────────────── */
+/* ─── Botões ────────────────────────────────────────────────── */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -399,7 +402,7 @@ input::placeholder { color: var(--text-muted); }
 
 .full { width: 100%; }
 
-/* ─── Tags / Badges ──────────────────────────────────────────── */
+/* ─── Tags ──────────────────────────────────────────── */
 .tag {
   display: inline-block;
   padding: 5px 12px;
@@ -436,7 +439,7 @@ input::placeholder { color: var(--text-muted); }
   font-weight: 600;
 }
 
-/* ─── Typography ─────────────────────────────────────────────── */
+/* ─── Letramento ─────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Anton', sans-serif;
   font-weight: 400 !important;
@@ -455,7 +458,7 @@ h1, h2, h3, h4, h5, h6 {
 .text-orange { color: var(--orange-light); }
 .text-cyan  { color: var(--cyan); }
 
-/* ─── Section title ──────────────────────────────────────────── */
+/* ─── Titulo ──────────────────────────────────────────── */
 .section-title { margin-bottom: 28px; }
 .section-title h2 {
   font-size: 2rem;
@@ -465,7 +468,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .section-title p { color: var(--text-soft); line-height: 1.6; }
 
-/* ─── Hero (public) ──────────────────────────────────────────── */
+/* ─── Bonequinho (publico) ──────────────────────────────────────────── */
 .hero {
   display: grid;
   grid-template-columns: 1.3fr 0.7fr;
@@ -498,7 +501,7 @@ h1, h2, h3, h4, h5, h6 {
   animation: floatCard 5s ease-in-out infinite;
 }
 
-/* ─── Section ────────────────────────────────────────────────── */
+/* ─── Seção ─────────────────────────────────────────────────── */
 .section { padding: 56px 0; }
 .section-gap { margin-top: 24px; }
 
@@ -526,7 +529,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 10px;
 }
 
-/* ─── Metric card ────────────────────────────────────────────── */
+/* ─── Metricas dos cards ────────────────────────────────────────────── */
 .metric-card {
   padding: 20px 22px;
   border-radius: var(--radius-card);
@@ -560,7 +563,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .small-text { font-size: 0.9rem; color: var(--text-muted); }
 
-/* ─── Progress bar ───────────────────────────────────────────── */
+/* ─── Barra de progresso ───────────────────────────────────────────── */
 .progress-bar {
   height: 6px;
   border-radius: 999px;
@@ -580,7 +583,7 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(90deg, var(--cyan), var(--blue));
 }
 
-/* ─── Form ───────────────────────────────────────────────────── */
+/* ─── Formulario Cad. ───────────────────────────────────────────────────── */
 .form { display: grid; gap: 12px; margin-top: 20px; }
 
 /* ─── Auth layout ────────────────────────────────────────────── */
@@ -627,7 +630,7 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 4px 14px rgba(255,107,0,0.3);
 }
 
-/* ─── Dashboard layout ───────────────────────────────────────── */
+/* ─── layout do Dashboard  ───────────────────────────────────────── */
 .dashboard-hero {
   display: flex;
   justify-content: space-between;
@@ -657,7 +660,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 4px;
 }
 
-/* ─── User info list ─────────────────────────────────────────── */
+/* ─── Informações do usuário ─────────────────────────────────────────── */
 .user-info-list { display: grid; gap: 10px; margin-top: 16px; }
 
 .user-info-item {
@@ -689,7 +692,7 @@ h1, h2, h3, h4, h5, h6 {
 /* ─── Divider ────────────────────────────────────────────────── */
 hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
-/* ─── Footer ─────────────────────────────────────────────────── */
+/* ─── roda pé ─────────────────────────────────────────────────── */
 .footer {
   padding: 32px 0;
   color: var(--text-muted);
@@ -698,13 +701,13 @@ hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
   border-top: 1px solid var(--border);
 }
 
-/* ─── Scrollbar ──────────────────────────────────────────────── */
+/* ─── barra de rolagem ──────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-main); }
 ::-webkit-scrollbar-thumb { background: rgba(255,107,0,0.3); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,107,0,0.5); }
 
-/* ─── Animations ─────────────────────────────────────────────── */
+/* ─── Animações ─────────────────────────────────────────────── */
 @keyframes fadePage {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -726,7 +729,244 @@ hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 }
 
 
-/* ─── Responsive ─────────────────────────────────────────────── */
+/* ─── Utilitários para substituição de inline styles ────────── */
+.animate-float-robot {
+  animation: floatRobot 3s ease-in-out infinite;
+}
+
+.animate-float-robot-slow {
+  animation: floatRobot 4s ease-in-out infinite;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon-img {
+  height: 42px;
+  object-fit: contain;
+}
+
+.btn-nav {
+  padding: 8px 18px;
+  font-size: 0.85rem;
+}
+
+.btn-enter {
+  padding: 10px 22px;
+}
+
+.feature-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255,107,0,0.2), rgba(255,107,0,0.06));
+  border: 1px solid rgba(255,107,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin-bottom: 14px;
+}
+
+.plan-highlight-bar {
+  top: -38px;
+  background: linear-gradient(90deg, var(--orange), var(--orange-light));
+}
+
+.plan-sub-tag {
+  margin-bottom: 16px;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+  align-self: flex-start;
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metric-icon {
+  font-size: 1.2rem;
+}
+
+.chatbot-container {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+}
+
+.chatbot-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.chatbot-avatar {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.chatbot-avatar-sm {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.chatbot-avatar-typing {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.chatbot-status {
+  font-size: 0.8rem;
+  color: var(--success);
+  font-weight: 600;
+}
+
+.chatbot-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chatbot-msg {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chatbot-msg-bot {
+  margin-right: 40px;
+  background: rgba(255,107,0,0.05);
+  border-color: rgba(255,107,0,0.2);
+}
+
+.chatbot-msg-user {
+  margin-left: 40px;
+  background: rgba(255,255,255,0.03);
+  border-color: var(--border);
+}
+
+.chatbot-msg-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.chatbot-user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.chatbot-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  margin-left: 52px;
+}
+
+.chatbot-form {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.chatbot-typing-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.auth-info-text {
+  margin-top: 16px;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.7;
+}
+
+.auth-test-box {
+  margin-top: 32px;
+}
+
+.auth-test-item {
+  margin-bottom: 12px;
+}
+
+.auth-test-value {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+}
+
+.hero-stat-value {
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, var(--white), var(--orange-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-stat-label {
+  color: rgba(255,255,255,0.6);
+  margin-top: 8px;
+}
+
+.cta-title {
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 16px 0 20px;
+  line-height: 1.1;
+}
+
+.cta-text {
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 36px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.online-indicator {
+  color: #7cfc98;
+}
+
+.chatbot-fab {
+  padding: 0;
+}
+
+.gsap-dashboard-section {
+  opacity: 1;
+}
+
+/* ─── Responsividade ─────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .sidebar { display: none; }
   .main-content { margin-left: 0; }
@@ -744,5 +984,5 @@ hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
   .dashboard-hero { flex-direction: column; }
   .dashboard-user-box { text-align: left; min-width: unset; width: 100%; }
   
-  .auth-info { display: none; } /* Ocultar painel lateral no cadastro mobile */
+  .auth-info { display: none; } /* aqui para ocultar painel lateral no cadastro mobile */
 }

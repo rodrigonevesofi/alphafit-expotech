@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function StudentFeed() {
   const feedPosts = [
     {
@@ -21,12 +23,17 @@ export default function StudentFeed() {
   ];
 
   return (
-    <div className="glass card w-full">
-      <h3 style={{ marginBottom: "16px" }}>Feed de Atualizações</h3>
+    <div className="glass card w-full relative">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="mb-0">Feed de Atualizações</h3>
+        <Link to="/noticias" className="text-orange-500 text-sm font-bold hover:underline">
+          Ver todas as notícias &rarr;
+        </Link>
+      </div>
       
       <div className="flex flex-col gap-5 max-h-[500px] overflow-y-auto pr-2">
         {feedPosts.map((post) => (
-          <div key={post.id} className="flex flex-col" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", padding: "16px" }}>
+          <Link to="/noticias" key={post.id} className="flex flex-col hover:border-orange-500/50 transition-colors" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", padding: "16px", display: "block" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px" }}>
               <strong style={{ color: "var(--orange-light)" }}>{post.author}</strong>
               <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>{post.time}</span>
@@ -48,14 +55,14 @@ export default function StudentFeed() {
             )}
             
             <div className="mt-auto" style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--border)", paddingTop: "12px" }}>
-              <button style={{ background: "transparent", color: "var(--text-soft)", display: "flex", alignItems: "center", gap: "6px", fontSize: "0.85rem" }}>
+              <button type="button" onClick={(e) => e.preventDefault()} style={{ background: "transparent", color: "var(--text-soft)", display: "flex", alignItems: "center", gap: "6px", fontSize: "0.85rem" }}>
                 👍 {post.likes} Curtidas
               </button>
-              <button style={{ background: "transparent", color: "var(--text-soft)", display: "flex", alignItems: "center", gap: "6px", fontSize: "0.85rem" }}>
+              <button type="button" onClick={(e) => e.preventDefault()} style={{ background: "transparent", color: "var(--text-soft)", display: "flex", alignItems: "center", gap: "6px", fontSize: "0.85rem" }}>
                 💬 {post.comments} Comentários
               </button>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

@@ -13,7 +13,7 @@ export default function AdminDashboard() {
         <div>
           <span className="tag">Dashboard Admin</span>
           <h1>Bem-vindo, {user?.name?.split(" ")[0] || "Admin"}</h1>
-          <p className="text-soft" style={{ marginTop: 6 }}>
+          <p className="text-soft mt-1.5">
             Gerencie alunos, métricas e acompanhe a operação.
           </p>
         </div>

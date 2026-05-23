@@ -4,12 +4,16 @@ import cyborgMan from "../../assets/cyborg_man.png";
 
 const studentLinks = [
   { to: "/aluno",   icon: "⊞", label: "Dashboard" },
+  { to: "/agenda",  icon: "🗓", label: "Agenda" },
+  { to: "/produtos",icon: "🛒", label: "Nossa Loja" },
   { to: "/chatbot", icon: <img src={cyborgMan} alt="AlphaBot" style={{ width: "20px", height: "20px", objectFit: "contain" }} />, label: "AlphaBot" },
 ];
 
 const adminLinks = [
   { to: "/admin",   icon: "⊞", label: "Dashboard" },
   { to: "/aluno",   icon: "◉", label: "Painel Aluno" },
+  { to: "/agenda",  icon: "🗓", label: "Agenda" },
+  { to: "/produtos",icon: "🛒", label: "Nossa Loja" },
   { to: "/chatbot", icon: <img src={cyborgMan} alt="AlphaBot" style={{ width: "20px", height: "20px", objectFit: "contain" }} />, label: "AlphaBot" },
 ];
 

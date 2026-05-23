@@ -7,8 +7,9 @@ import { features } from "../data/features";
 import { plans } from "../data/plans";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
 import gymWoman from "../assets/gym-woman.jpg";
@@ -25,29 +26,25 @@ export default function Home() {
   const containerRef = useRef(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Hero Animation
-      gsap.from(".hero-text", { y: 50, opacity: 0, duration: 1, ease: "power3.out" });
-      gsap.from(".hero-card", { x: 50, opacity: 0, duration: 1, delay: 0.3, ease: "power3.out" });
+  useGSAP(() => {
+    // Animação do hero
+    gsap.from(".hero-text", { y: 50, opacity: 0, duration: 1, ease: "power3.out" });
+    gsap.from(".hero-card", { x: 50, opacity: 0, duration: 1, delay: 0.3, ease: "power3.out" });
 
-      // Sections Scroll Animation
-      gsap.utils.toArray(".gsap-section").forEach((section) => {
-        gsap.from(section, {
-          scrollTrigger: {
-            trigger: section,
-            start: "top 80%",
-          },
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        });
+    // Animações de scroll nas seções
+    gsap.utils.toArray(".gsap-section").forEach((section) => {
+      gsap.from(section, {
+        scrollTrigger: {
+          trigger: section,
+          start: "top 80%",
+        },
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out",
       });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
+    });
+  }, { scope: containerRef });
 
   return (
     <div className="app-bg" ref={containerRef}>
@@ -55,14 +52,14 @@ export default function Home() {
 
       {/* Hero */}
       <section className="hero container relative">
-        {/* Background Image Hero */}
+        {/*Fundo com imagem do boneco hero */}
         <div className="absolute inset-0 z-0 rounded-[40px] overflow-hidden opacity-50">
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40 z-10" />
           <img src={gymWoman} alt="Mulher treinando" className="w-full h-full object-cover object-[center_20%]" />
         </div>
 
-        <div className="hero-text relative z-10" style={{ paddingLeft: "5%" }}>
+        <div className="hero-text relative z-10 pl-[5%]">
           <span className="tag">Plataforma fitness</span>
           <h1>
             Treine com <span className="gradient-text">inteligência</span> e evolua de verdade
@@ -87,7 +84,7 @@ export default function Home() {
         </div>
 
         <div className="hero-card glass relative z-10">
-          <p className="small-label" style={{ marginBottom: 16 }}>Preview do sistema</p>
+          <p className="small-label mb-4">Preview do sistema</p>
           <div className="user-info-list">
             <div className="user-info-item">
               <strong>Treino do dia</strong>
@@ -99,13 +96,13 @@ export default function Home() {
             </div>
             <div className="user-info-item">
               <strong>Assistente virtual</strong>
-              <span style={{ color: "#7cfc98" }}>● Online</span>
+              <span className="online-indicator">● Online</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
+      {/* Estatisticas */}
       <section className="container section gsap-section">
         <div className="grid-3">
           {[
@@ -113,15 +110,15 @@ export default function Home() {
             { label: "Treinos cadastrados", value: "340+" },
             { label: "Satisfação", value: "98%" },
           ].map((stat) => (
-            <div key={stat.label} className="glass card" style={{ textAlign: "center" }}>
+            <div key={stat.label} className="glass card text-center">
               <p className="metric-value">{stat.value}</p>
-              <p style={{ color: "rgba(255,255,255,0.6)", marginTop: 8 }}>{stat.label}</p>
+              <p className="text-white/60 mt-2">{stat.label}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Features */}
+      {/* Recursos */}
       <section className="container section gsap-section">
         <SectionTitle
           badge="Recursos"
@@ -135,7 +132,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Nossa Estrutura */}
+      {/* Estrutura */}
       <section className="container section gsap-section">
         <SectionTitle
           badge="A Estrutura"
@@ -143,7 +140,7 @@ export default function Home() {
           subtitle="Equipamentos de última geração em um espaço amplo focado em resultados reais."
         />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[600px]">
-          {/* Main big image */}
+          {/* Imagem principal grande */}
           <div className="lg:col-span-8 rounded-3xl overflow-hidden relative group border border-white/5 shadow-2xl">
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 z-10" />
             <div className="absolute bottom-8 left-8 z-20">
@@ -152,7 +149,7 @@ export default function Home() {
             </div>
             <img src={gymTurf} alt="Espaço de Crossfit" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
           </div>
-          {/* Two small images */}
+          {/* imagens laterais */}
           <div className="lg:col-span-4 flex flex-col gap-6">
             <div className="flex-1 rounded-3xl overflow-hidden relative group border border-white/5 shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 z-10" />
@@ -201,7 +198,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Plans */}
+      {/* Planos da academia*/}
       <section className="container section gsap-section">
         <SectionTitle
           badge="Planos"
@@ -222,10 +219,10 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2">
               <div className="p-10 md:p-16 flex flex-col justify-center items-start text-left">
                 <span className="tag">Comece hoje</span>
-                <h2 style={{ fontSize: "3rem", fontWeight: 900, margin: "16px 0 20px", lineHeight: "1.1" }}>
+                <h2 className="cta-title">
                   Pronto para <span className="gradient-text">transformar</span> seu treino?
                 </h2>
-                <p style={{ color: "rgba(255,255,255,0.7)", marginBottom: 36, fontSize: "1.1rem", lineHeight: "1.6" }}>
+                <p className="cta-text">
                   Junte-se aos melhores. Crie sua conta gratuitamente e tenha acesso ao painel completo da AlphaFit, planilhas inteligentes e conexão direta com a comunidade.
                 </p>
                 <Link to="/auth" className="btn-primary shadow-[0_0_30px_rgba(255,107,0,0.3)] px-10 py-4 text-lg">Criar conta grátis</Link>
@@ -275,9 +272,9 @@ export default function Home() {
               >
                 Voltar
               </button>
-              <button className="btn-primary flex-1">
+              <Link to="/contratacao" state={{ plan: selectedPlan }} className="btn-primary flex-1 text-center flex justify-center items-center">
                 Contratar plano
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -288,8 +285,8 @@ export default function Home() {
       {/* Botão Flutuante do AlphaBot */}
       <Link 
         to="/chatbot" 
-        className="fixed bottom-8 right-8 z-40 w-24 h-24 flex items-center justify-center hover:scale-110 transition-transform drop-shadow-[0_0_15px_rgba(255,107,0,0.6)]"
-        style={{ padding: 0, animation: "floatRobot 4s ease-in-out infinite" }}
+
+        className="fixed bottom-8 right-8 z-40 w-24 h-24 flex items-center justify-center hover:scale-110 transition-transform drop-shadow-[0_0_15px_rgba(255,107,0,0.6)] chatbot-fab animate-float-robot-slow"
       >
         <img src={cyborgMan} alt="AlphaBot" className="w-full h-full object-contain" />
       </Link>
