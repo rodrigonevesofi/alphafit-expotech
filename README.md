@@ -1,6 +1,6 @@
 # ALPHAFIT
 
-Projeto usando o front-end real enviado como base, mantendo a mesma identidade visual, páginas, componentes e estilo.
+Projeto academico.
 
 ## Stack
 
