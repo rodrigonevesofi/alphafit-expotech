@@ -17,7 +17,7 @@ const adminLinks = [
   { to: "/chatbot", icon: <img src={cyborgMan} alt="AlphaBot" style={{ width: "20px", height: "20px", objectFit: "contain" }} />, label: "AlphaBot" },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ export default function Sidebar() {
   function handleLogout() {
     logout();
     navigate("/");
+    if (onClose) onClose();
   }
 
   const initials = user?.name
@@ -34,7 +35,12 @@ export default function Sidebar() {
     : "U";
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? "open" : ""}`}>
+      {/* Botão de Fechar no Mobile */}
+      <button className="sidebar-close-btn" onClick={onClose} aria-label="Fechar menu">
+        ✕
+      </button>
+
       <div className="sidebar-logo">
         <img src={cyborgMan} alt="Cyborg" style={{ height: "42px", objectFit: "contain" }} />
         <div className="sidebar-logo-text">
@@ -48,6 +54,7 @@ export default function Sidebar() {
             key={link.to}
             to={link.to}
             className={`sidebar-link ${location.pathname === link.to ? "active" : ""}`}
+            onClick={onClose}
           >
             <span className="sidebar-link-icon">{link.icon}</span>
             {link.label}
@@ -58,6 +65,7 @@ export default function Sidebar() {
           to="/"
           className="sidebar-link"
           style={{ marginTop: "auto" }}
+          onClick={onClose}
         >
           <span className="sidebar-link-icon">⌂</span>
           Página inicial

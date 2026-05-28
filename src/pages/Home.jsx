@@ -17,7 +17,7 @@ import gymDumbbells from "../assets/gym-dumbbells.jpg";
 import gymTreadmills from "../assets/gym-treadmills.jpg";
 import gymTurf from "../assets/gym-turf.jpg";
 import gymMan from "../assets/gym-man.jpg";
-import cyborgMan from "../assets/cyborg_man.png";
+import Video_chat from "../assets/Video_chat.webm";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -283,12 +283,18 @@ export default function Home() {
       <Footer />
 
       {/* Botão Flutuante do AlphaBot */}
-      <Link 
-        to="/chatbot" 
-
-        className="fixed bottom-8 right-8 z-40 w-24 h-24 flex items-center justify-center hover:scale-110 transition-transform drop-shadow-[0_0_15px_rgba(255,107,0,0.6)] chatbot-fab animate-float-robot-slow"
+      <Link
+        to="/chatbot"
+        className="fixed bottom-8 right-8 z-40 w-[146px] h-[146px] flex items-center justify-center hover:scale-110 transition-transform drop-shadow-[0_0_15px_rgba(255,107,0,0.6)] chatbot-fab animate-float-robot-slow"
       >
-        <img src={cyborgMan} alt="AlphaBot" className="w-full h-full object-contain" />
+        <video
+          src={Video_chat}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-contain"
+        />
       </Link>
     </div>
   );
