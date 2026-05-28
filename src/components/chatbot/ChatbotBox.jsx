@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import mascot from "../../assets/cyborg_man.png";
+import mascot from "../../assets/Video_chat.webm";
 import { apiSendChatMessage } from "../../services/api";
 import { apiSaveStudentBiotype } from "../../services/api";
 
@@ -258,9 +258,12 @@ setTestActive(false);
   return (
     <div className="glass card chatbot-container">
       <div className="chatbot-header">
-        <img
+        <video
           src={mascot}
-          alt="AlphaBot Mascote Pixel Art"
+          autoPlay
+          loop
+          muted
+          playsInline
           className="chatbot-avatar animate-float-robot"
         />
 
@@ -280,9 +283,12 @@ setTestActive(false);
           >
             <div className="chatbot-msg-row">
               {msg.type === "bot" && (
-                <img
+                <video
                   src={mascot}
-                  alt="Bot Avatar"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   className="chatbot-avatar-sm animate-float-robot"
                 />
               )}
@@ -325,9 +331,12 @@ setTestActive(false);
         {isTyping && (
           <div className="glass card chatbot-msg chatbot-msg-bot">
             <div className="chatbot-typing-row">
-              <img
+              <video
                 src={mascot}
-                alt="Bot Avatar"
+                autoPlay
+                loop
+                muted
+                playsInline
                 className="chatbot-avatar-typing animate-float-robot"
               />
 
