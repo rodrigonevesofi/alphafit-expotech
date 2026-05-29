@@ -3,8 +3,11 @@ import ReactMarkdown from "react-markdown";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import mascot from "../../assets/Video_chat.webm";
-import { apiSendChatMessage } from "../../services/api";
-import { apiSaveStudentBiotype } from "../../services/api";
+import {
+  apiSaveStudentBiotype,
+  apiSendChatMessage,
+  apiStreamChatMessage,
+} from "../../services/api";
 
 function MarkdownMessage({ text }) {
   return (
@@ -91,6 +94,25 @@ const biotypeQuestions = [
   },
 ];
 
+function createLocalMessageId(prefix) {
+  return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function updateBotMessageById(prev, messageId, text, streaming = false) {
+  const hasMessage = prev.some((msg) => msg.id === messageId);
+
+  if (!hasMessage) {
+    return [
+      ...prev,
+      { id: messageId, type: "bot", text, streaming },
+    ];
+  }
+
+  return prev.map((msg) =>
+    msg.id === messageId ? { ...msg, text, streaming } : msg
+  );
+}
+
 export default function ChatbotBox() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { user, updateUser } = useAuth();
@@ -107,6 +129,7 @@ export default function ChatbotBox() {
   const [answers, setAnswers] = useState({});
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isWaitingFirstChunk, setIsWaitingFirstChunk] = useState(false);
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -223,35 +246,89 @@ setTestActive(false);
     setMessages((prev) => [...prev, { type: "user", text: userText }]);
     setInputValue("");
     setIsTyping(true);
+    setIsWaitingFirstChunk(true);
+
+    const botMessageId = createLocalMessageId("bot");
+    let receivedText = "";
 
     try {
-      const data = await apiSendChatMessage(userText, sessionId, user?.id || null);
+      await apiStreamChatMessage(userText, sessionId, user?.id || null, {
+        onChunk: (chunk) => {
+          if (!chunk) return;
 
-      if (!data.success) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            type: "bot",
-            text:
-              data.message ||
-              "Não consegui responder agora. Verifique se o Ollama está rodando.",
-          },
-        ]);
+          receivedText += chunk;
+          setIsWaitingFirstChunk(false);
 
-        return;
+          setMessages((prev) =>
+            updateBotMessageById(prev, botMessageId, receivedText, true)
+          );
+        },
+      });
+
+      if (receivedText.trim()) {
+        setMessages((prev) =>
+          updateBotMessageById(prev, botMessageId, receivedText, false)
+        );
       }
 
-      setMessages((prev) => [...prev, { type: "bot", text: data.response }]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        {
-          type: "bot",
-          text: "Não consegui conectar com o servidor. Confirme se o back-end está rodando em http://localhost:3333.",
-        },
-      ]);
+      if (!receivedText.trim()) {
+        const data = await apiSendChatMessage(userText, sessionId, user?.id || null);
+
+        if (!data.success) {
+          setMessages((prev) => [
+            ...prev,
+            {
+              type: "bot",
+              text:
+                data.message ||
+                "Não consegui responder agora. Verifique se o Ollama está rodando.",
+            },
+          ]);
+
+          return;
+        }
+
+        setMessages((prev) =>
+          updateBotMessageById(prev, botMessageId, data.response, false)
+        );
+      }
+    } catch (error) {
+      let fallbackErrorMessage = "";
+
+      if (error?.fallbackAllowed !== false && !receivedText.trim()) {
+        try {
+          const data = await apiSendChatMessage(userText, sessionId, user?.id || null);
+
+          if (data.success) {
+            setMessages((prev) =>
+              updateBotMessageById(prev, botMessageId, data.response, false)
+            );
+
+            return;
+          } else {
+            fallbackErrorMessage = data.message || "";
+          }
+        } catch (fallbackError) {
+          fallbackErrorMessage = fallbackError?.message || "";
+        }
+      }
+
+      const message =
+        fallbackErrorMessage ||
+        error?.message ||
+        "Não consegui conectar com o servidor. Confirme se o back-end está rodando em http://localhost:3333.";
+
+      setMessages((prev) =>
+        updateBotMessageById(
+          prev,
+          botMessageId,
+          receivedText ? `${receivedText}\n\n_${message}_` : message,
+          false
+        )
+      );
     } finally {
       setIsTyping(false);
+      setIsWaitingFirstChunk(false);
     }
   };
 
@@ -278,7 +355,7 @@ setTestActive(false);
       <div className="form chatbot-messages">
         {messages.map((msg, index) => (
           <div
-            key={index}
+            key={msg.id || index}
             className={`glass card chatbot-msg ${msg.type === "bot" ? "chatbot-msg-bot" : "chatbot-msg-user"}`}
           >
             <div className="chatbot-msg-row">
@@ -328,7 +405,7 @@ setTestActive(false);
           </div>
         ))}
 
-        {isTyping && (
+        {isTyping && isWaitingFirstChunk && (
           <div className="glass card chatbot-msg chatbot-msg-bot">
             <div className="chatbot-typing-row">
               <video

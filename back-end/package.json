@@ -7,7 +7,8 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "seed": "ts-node-dev --transpile-only src/database/seed.ts"
+    "seed": "ts-node-dev --transpile-only src/database/seed.ts",
+    "test:chat": "npm run build && node scripts/test-chat-routing.cjs"
   },
   "dependencies": {
     "axios": "^1.7.9",

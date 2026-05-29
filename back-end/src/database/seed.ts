@@ -23,7 +23,7 @@ async function seed() {
     { title: "Hipertrofia ABC", objective: "Ganho de massa", level: "Intermediário", duration: 60, description: "Divisão por grupos musculares." }
   ] as any[]);
 
-  console.log("Banco SQLite populado com sucesso.");
+  console.log("Banco SQLite criado.");
   process.exit(0);
 }
 

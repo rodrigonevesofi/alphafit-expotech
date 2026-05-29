@@ -12,6 +12,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const bodyError = err as { status?: number; body?: unknown };
+
+  if (err instanceof SyntaxError && bodyError.status === 400 && 'body' in err) {
+    console.warn("[app] invalid JSON body", req.method, req.path, err.message);
+    return res.status(400).json({
+      success: false,
+      message: "JSON inválido no corpo da requisição.",
+      detail: err.message,
+    });
+  }
+
+  next(err);
+});
+
 app.get("/", (req, res) => {
   res.json({ success: true, message: "API ALPHAFIT rodando." });
 });

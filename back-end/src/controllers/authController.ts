@@ -28,6 +28,7 @@ export async function register(req: Request, res: Response) {
     const user = await User.create({ name, email, phone, password: hash, role: role || "student" });
     return res.status(201).json({ success: true, message: "Cadastro realizado com sucesso.", user: publicUser(user) });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ success: false, message: "Erro ao cadastrar usuário." });
   }
 }
@@ -35,6 +36,9 @@ export async function register(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: "E-mail e senha são obrigatórios." });
+    }
     const user = await User.findOne({ where: { email } });
     if (!user) return res.status(401).json({ success: false, message: "E-mail ou senha inválidos." });
 
@@ -43,7 +47,8 @@ export async function login(req: Request, res: Response) {
 
     const token = jwt.sign(publicUser(user), process.env.JWT_SECRET || "alphafit_dev_secret", { expiresIn: "8h" });
     return res.json({ success: true, message: "Login realizado com sucesso.", token, user: publicUser(user) });
-  } catch {
+  } catch (error) {
+    console.error(error);
     return res.status(500).json({ success: false, message: "Erro ao realizar login." });
   }
 }
@@ -61,14 +66,18 @@ export async function createUser(req: Request, res: Response) {
 }
 
 export async function updateUser(req: Request, res: Response) {
-  const user = await User.findByPk(req.params.id);
+  const user = await User.findByPk(String(req.params.id));
   if (!user) return res.status(404).json({ success: false, message: "Usuário não encontrado." });
-  await user.update(req.body);
+  const updates: any = { ...req.body };
+  if (updates.password) {
+    updates.password = await bcrypt.hash(updates.password, 8);
+  }
+  await user.update(updates);
   return res.json({ success: true, message: "Usuário atualizado.", user: publicUser(user) });
 }
 
 export async function deleteUser(req: Request, res: Response) {
-  const user = await User.findByPk(req.params.id);
+  const user = await User.findByPk(String(req.params.id));
   if (!user) return res.status(404).json({ success: false, message: "Usuário não encontrado." });
   await user.destroy();
   return res.json({ success: true, message: "Usuário removido." });
