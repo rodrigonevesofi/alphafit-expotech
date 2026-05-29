@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import cyborgMan from "../../assets/cyborg_man.png";
+import logo from "../../assets/Logo-azul.png";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -17,16 +18,38 @@ export default function Header() {
     <header className="header">
       <div className="header-content">
         <Link to="/" className="logo logo-link" onClick={() => setIsMenuOpen(false)}>
-          <img src={cyborgMan} alt="Cyborg" className="logo-icon-img" />
+           <img src={logo} alt="logo" className="logo-icon-img" />
           <div>ALPHA<span>FIT</span></div>
         </Link>
+ <nav className="nav">
+          <NavLink
+            to="/"
+            className={({ isActive }) => isActive ? "active" : ""}
+          >
+            Home
+          </NavLink>
 
-        <nav className="nav">
-          <Link to="/">Home</Link>
-          <Link to="/produtos">Loja</Link>
-          <Link to="/chatbot">Chatbot</Link>
-          <Link to="/agenda">Agenda</Link>
+          <NavLink
+            to="/produtos"
+            className={({ isActive }) => isActive ? "active" : ""}
+          >
+            Loja
+          </NavLink>
 
+          <NavLink
+            to="/chatbot"
+            className={({ isActive }) => isActive ? "active" : ""}
+          >
+            Chatbot
+          </NavLink>
+
+          <NavLink
+            to="/agenda"
+            className={({ isActive }) => isActive ? "active" : ""}
+          >
+            Agenda
+          </NavLink>
+          
           {user ? (
             <>
               <Link
