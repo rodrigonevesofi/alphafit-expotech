@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import mascot from "../../assets/cyborg_man.png";
+import mascot from "../../assets/Logo-azul.png";
 import { useAuth } from "../../context/AuthContext";
 
 export default function Footer() {
