@@ -320,6 +320,12 @@ input::placeholder { color: var(--text-muted); }
 
 .nav a:hover { color: var(--white); }
 
+/* página atual */
+.nav a.active {
+  color: var(--cyan);
+}
+
+
 /* ─── Container ──────────────────────────────────────────────── */
 .container {
   width: min(1280px, 94%);
@@ -513,7 +519,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ─── Card ───────────────────────────────────────────────────── */
 .card {
-  padding: 22px;
+  padding: 25px;
+  padding-top: 43px;
   transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
 }
 
@@ -723,9 +730,10 @@ hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
   50%       { box-shadow: 0 0 0 8px rgba(255,107,0,0); }
 }
 
+
 @keyframes floatRobot {
-  0%, 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 5px rgba(255,107,0,0.5)); }
-  50% { transform: translateY(-6px) scale(1.02); filter: drop-shadow(0 0 15px rgba(255,107,0,0.9)); }
+  0%, 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 5px rgba(0,255,255,0.5)); }
+  50% { transform: translateY(-6px) scale(1.02); filter: drop-shadow(0 0 15px var(--cyan));; }
 }
 
 
@@ -738,15 +746,27 @@ hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
   animation: floatRobot 4s ease-in-out infinite;
 }
 
+.header{
+  height: 80px;
+  padding: 0 30px;
+}
+
+.header-content{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .logo-link {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.logo-icon-img {
-  height: 42px;
-  object-fit: contain;
+.logo-icon-img{
+  width: 68px;
+  height: auto;
 }
 
 .btn-nav {
